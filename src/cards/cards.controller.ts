@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Param } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { JwtPayload } from 'src/auth/entities/auth.entity';
@@ -14,5 +14,15 @@ export class CardsController {
   @Post()
   create(@Body() newCard: CardDto, @User() userAuth: UserType) {
     return this.cardsService.create(newCard, userAuth);
+  }
+
+  @Get()
+  findAll(@User() userAuth: JwtPayload) {
+    return this.cardsService.findAll(userAuth);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string, @User() userAuth: JwtPayload) {
+    return this.cardsService.findOne(+id, userAuth);
   }
 }

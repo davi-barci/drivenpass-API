@@ -23,9 +23,25 @@ export class CardsRepository {
     });
   }
 
-  async findByTitle(title: string, userId: number) {
+  async findByTitle(title: string, userId: number): Promise<Card> {
     return await this.prisma.card.findUnique({
       where: { userId_title: { title, userId } },
+    });
+  }
+
+  findAll(userId: number): Promise<Card[]> {
+    return this.prisma.card.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+  }
+
+  findById(id: number): Promise<Card> {
+    return this.prisma.card.findFirst({
+      where: {
+        id: id,
+      },
     });
   }
 }
