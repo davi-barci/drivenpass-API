@@ -38,4 +38,10 @@ export class NotesRepository {
       },
     });
   }
+
+  delete(title: string, userId: number): Promise<Note> {
+    return this.prisma.note.delete({
+      where: { userId_title: { title, userId } },
+    });
+  }
 }

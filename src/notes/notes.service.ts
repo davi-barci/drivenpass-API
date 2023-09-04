@@ -53,4 +53,14 @@ export class NotesService {
     const text = this.cryptrService.decrypt(userNote.text);
     return { ...userNote, text };
   }
+
+  async delete(id: number, userAuth: JwtPayload) {
+    const userNote = await this.notesRepository.findById(id);
+
+    if (!userNote) throw new NotFoundException();
+
+    if (userNote.userId !== userAuth.id) throw new ForbiddenException();
+
+    return await this.notesRepository.delete(userNote.title, userAuth.id);
+  }
 }
