@@ -61,4 +61,19 @@ export class CredentialsService {
     const password = this.cryptrService.decrypt(userCredential.password);
     return { ...userCredential, password };
   }
+
+  async delete(id: number, userAuth: JwtPayload) {
+    const userCredential = await this.credentialsRepository.findById(id);
+
+    if (!userCredential) throw new NotFoundException();
+
+    if (userCredential.userId !== userAuth.id) {
+      throw new ForbiddenException();
+    }
+
+    return await this.credentialsRepository.delete(
+      userAuth.id,
+      userCredential.title,
+    );
+  }
 }

@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Get,
   Param,
+  Delete,
 } from '@nestjs/common';
 import { CredentialsService } from './credentials.service';
 import { CredentialDto } from './dto/create-credential.dto';
@@ -32,5 +33,10 @@ export class CredentialsController {
   @Get(':id')
   findOne(@Param('id') id: string, @User() userAuth: JwtPayload) {
     return this.credentialsService.findOne(+id, userAuth);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string, @User() userAuth: JwtPayload) {
+    return this.credentialsService.delete(+id, userAuth);
   }
 }

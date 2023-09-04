@@ -43,4 +43,12 @@ export class CredentialsRepository {
       },
     });
   }
+
+  async delete(userId: number, title: string) {
+    return await this.prisma.credential.delete({
+      where: {
+        userId_title: { title, userId },
+      },
+    });
+  }
 }
