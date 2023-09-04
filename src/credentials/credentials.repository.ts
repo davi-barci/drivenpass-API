@@ -27,4 +27,20 @@ export class CredentialsRepository {
       where: { userId_title: { title, userId } },
     });
   }
+
+  async findAll(userId: number): Promise<Credential[]> {
+    return await this.prisma.credential.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+  }
+
+  async findById(id: number): Promise<Credential> {
+    return await this.prisma.credential.findFirst({
+      where: {
+        id: id,
+      },
+    });
+  }
 }

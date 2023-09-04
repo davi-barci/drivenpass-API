@@ -1,8 +1,14 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CredentialsRepository } from './credentials.repository';
 import { CredentialDto } from './dto/create-credential.dto';
-import { User } from '@prisma/client';
+import { Credential, User } from '@prisma/client';
 import { CryptrService } from '../utils/encryption.utils';
+import { JwtPayload } from '../auth/entities/auth.entity';
 
 @Injectable()
 export class CredentialsService {
@@ -26,5 +32,33 @@ export class CredentialsService {
       { ...newCredential, password: encryptedPassword },
       user.id,
     );
+  }
+
+  async findAll(userAuth: JwtPayload) {
+    const userCredentials = await this.credentialsRepository.findAll(
+      userAuth.id,
+    );
+
+    const userCredentialsDecrypted = await Promise.all(
+      userCredentials.map(async (credential: Credential) => {
+        const password = this.cryptrService.decrypt(credential.password);
+        return { ...credential, password };
+      }),
+    );
+
+    return userCredentialsDecrypted;
+  }
+
+  async findOne(id: number, userAuth: JwtPayload) {
+    const userCredential = await this.credentialsRepository.findById(id);
+
+    if (!userCredential) throw new NotFoundException();
+
+    if (userCredential.userId !== userAuth.id) {
+      throw new ForbiddenException();
+    }
+
+    const password = this.cryptrService.decrypt(userCredential.password);
+    return { ...userCredential, password };
   }
 }
