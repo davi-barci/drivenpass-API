@@ -17,9 +17,25 @@ export class NotesRepository {
     });
   }
 
-  async findByTitle(title: string, userId: number) {
+  async findByTitle(title: string, userId: number): Promise<Note> {
     return await this.prisma.note.findUnique({
       where: { userId_title: { title, userId } },
+    });
+  }
+
+  findAll(userId: number): Promise<Note[]> {
+    return this.prisma.note.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+  }
+
+  findById(id: number): Promise<Note> {
+    return this.prisma.note.findFirst({
+      where: {
+        id: id,
+      },
     });
   }
 }
