@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { NotesController } from './notes.controller';
 import { NotesRepository } from './notes.repository';
-import { CryptrService } from 'src/utils/encryption.utils';
+import { CryptrService } from '../utils/encryption.utils';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({

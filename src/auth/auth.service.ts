@@ -8,7 +8,7 @@ import { SignInDto } from './dto/signin.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from 'jsonwebtoken';
-import { UsersRepository } from 'src/users/users.respository';
+import { UsersRepository } from '../users/users.respository';
 
 @Injectable()
 export class AuthService {

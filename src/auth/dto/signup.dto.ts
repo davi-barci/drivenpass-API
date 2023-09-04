@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
@@ -8,6 +9,10 @@ import {
 export class SignUpDto {
   @IsEmail()
   @IsNotEmpty()
+  @ApiProperty({
+    description: 'Endereço de e-mail do usuário',
+    example: 'usuario@example.com',
+  })
   email: string;
 
   @IsStrongPassword({
@@ -18,15 +23,28 @@ export class SignUpDto {
     minNumbers: 1,
   })
   @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
+    description: 'Senha do usuário',
+    example: 'SenhaSegura123!',
+  })
   password: string;
 }
 
 export class CreateSignUpDto {
   @IsNotEmpty()
   @IsString()
+  @ApiProperty({
+    description: 'Endereço de e-mail do usuário',
+    example: 'usuario@example.com',
+  })
   email: string;
 
   @IsNotEmpty()
   @IsString()
+  @ApiProperty({
+    description: 'Senha do usuário',
+    example: 'SenhaSegura123!',
+  })
   password: string;
 }
