@@ -3,7 +3,6 @@ import {
   IsNotEmpty,
   IsString,
   IsStrongPassword,
-  isNotEmpty,
 } from 'class-validator';
 
 export class SignUpDto {
