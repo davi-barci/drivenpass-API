@@ -1,4 +1,12 @@
-import { Controller, Post, Body, UseGuards, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { JwtPayload } from 'src/auth/entities/auth.entity';
@@ -24,5 +32,10 @@ export class CardsController {
   @Get(':id')
   findOne(@Param('id') id: string, @User() userAuth: JwtPayload) {
     return this.cardsService.findOne(+id, userAuth);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string, @User() userAuth: JwtPayload) {
+    return this.cardsService.delete(+id, userAuth);
   }
 }

@@ -57,4 +57,16 @@ export class CardsService {
     const CVV = this.cryptrService.decrypt(userCard.CVV);
     return { ...userCard, password, CVV };
   }
+
+  async delete(id: number, userAuth: JwtPayload) {
+    const userCard = await this.cardsRepository.findById(id);
+
+    if (!userCard) throw new NotFoundException();
+
+    if (userCard.userId !== userAuth.id) {
+      throw new ForbiddenException();
+    }
+
+    return await this.cardsRepository.delete(userAuth.id, userCard.title);
+  }
 }

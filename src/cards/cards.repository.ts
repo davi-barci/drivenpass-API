@@ -44,4 +44,12 @@ export class CardsRepository {
       },
     });
   }
+
+  async delete(userId: number, title: string): Promise<Card> {
+    return await this.prisma.card.delete({
+      where: {
+        userId_title: { title, userId },
+      },
+    });
+  }
 }
